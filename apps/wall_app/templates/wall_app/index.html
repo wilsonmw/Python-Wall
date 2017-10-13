@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>The Wall</h1>
+
+    <form action='/postmessage' method='POST'>
+        {% csrf_token %}
+        Your name: <input type='text' name='name'>
+        <textarea name='message' rows=15 cols=40>Enter Message Here</textarea>
+        <input type='submit', value='Post Message!'>
+    </form>
+
+    <h1>Messages:</h1>
+    {% for message in messages %}
+        <p>{{message.name}} says:</p>
+        <p>{{message.message}}</p>
+        {% for each in comments %}
+            <p>{{each.comment}}</p>
+            <p>{{each.message_id}}</p>
+        {% endfor %}
+        <form action='/postcomment' method='POST'>
+            {% csrf_token %}
+            <input type='hidden' name='message_id' value={{message.id}}>
+            <input type='submit' value='Comment'>
+        </form>
+
+    {% endfor %}
+</body>
+</html>
+
